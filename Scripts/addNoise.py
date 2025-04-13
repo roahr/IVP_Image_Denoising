@@ -1,12 +1,12 @@
 import os
 import numpy as np
-import imageio
+import imageio.v2 as imageio
 import torch
 from tqdm import tqdm
 
 def add_noise(image, sigma=50):
-    image = torch.tensor(image / 255, dtype=torch.float32, device='cuda')
-    noise = torch.normal(0, sigma / 255, image.shape, device='cuda')
+    image = torch.tensor(image / 255, dtype=torch.float32, device='mps')
+    noise = torch.normal(0, sigma / 255, image.shape, device='mps')
     gauss_noise = image + noise
     return (gauss_noise * 255).cpu().numpy()
 
@@ -22,7 +22,7 @@ def process_images(input_dir, output_dir, sigma=50):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
-    file_list = os.listdir(input_dir)[:50]
+    file_list = os.listdir(input_dir)
     
     for filename in tqdm(file_list, desc="Processing Images"):
         input_path = os.path.join(input_dir, filename)
@@ -37,6 +37,6 @@ def process_images(input_dir, output_dir, sigma=50):
             print(f"Error processing {filename}: {e}")
 
 if __name__ == "__main__":
-    input_directory = "Dataset/DIV2K_train_HR"
-    output_directory = "ModelTrainingDataset/DIV2K_train_HR_noisy"
+    input_directory = "/Users/jayashre/Developer/VSC/IVP_Image_Denoising/FINAL/raw/DIV2K_valid_HR"
+    output_directory = "/Users/jayashre/Developer/VSC/IVP_Image_Denoising/FINAL/Valid"
     process_images(input_directory, output_directory, sigma=50)
