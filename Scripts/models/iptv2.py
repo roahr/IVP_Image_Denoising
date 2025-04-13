@@ -23,7 +23,7 @@ class FeedForward(nn.Module):
         return self.ffn(x)
 
 class SpatialMSA(nn.Module):
-    def __init__(self, dim, patch_size=16):
+    def __init__(self, dim, patch_size=32):
         super().__init__()
         self.attn = nn.MultiheadAttention(embed_dim=dim, num_heads=4, batch_first=True)
         self.patch_size = patch_size
@@ -82,7 +82,7 @@ class UpBlock(nn.Module):
         return self.up(x)
 
 class IPTV2(nn.Module):
-    def __init__(self, dim=256):
+    def __init__(self, dim=1024):
         super().__init__()
         self.input_proj = nn.Conv2d(3, dim, 3, padding=1)
         self.encoder1 = SpatialChannelBlock(dim)
